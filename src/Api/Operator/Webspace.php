@@ -81,6 +81,102 @@ class Webspace extends \PleskX\Api\Operator
     }
 
     /**
+     * @param array $properties
+     * @param array|null $hostingProperties
+     * @param $planName
+     * @return Struct\Info
+     */
+    public function update(
+        $filter_field,
+        $filter_value,
+        array $generalProperties = null,
+        array $limitProperties = null,
+        array $preferenceProperties = null,
+        array $hostingProperties = null,
+        array $diskUsageProperties = null,
+        array $performanceProperties = null,
+        array $permissionProperties = null,
+        array $phpProperties = null,
+        array $mailProperties = null
+    ) {
+        $packet = $this->_client->getPacket();
+        $setTag = $packet->addChild($this->_wrapperTag)->addChild('set');
+
+        $filterTag = $setTag->addChild('filter');
+        if (!is_null($filter_field)) {
+            $filterTag->addChild($filter_field, $filter_value);
+        }
+
+        $valuesTag = $setTag->addChild('values');
+
+        if ($generalProperties) {
+            $infoGeneral = $valuesTag->addChild('gen_setup');
+            foreach ($generalProperties as $name => $value) {
+                $infoGeneral->addChild($name, $value);
+            }
+        }
+
+        if ($limitProperties) {
+            $infoLimit = $valuesTag->addChild('limits');
+            foreach ($limitProperties as $name => $value) {
+                $infoLimit->addChild($name, $value);
+            }
+        }
+
+        if ($preferenceProperties) {
+            $infoPreference = $valuesTag->addChild('prefs');
+            foreach ($preferenceProperties as $name => $value) {
+                $infoPreference->addChild($name, $value);
+            }
+        }
+
+        if ($hostingProperties) {
+            $infoHosting = $valuesTag->addChild('hosting');
+            foreach ($hostingProperties as $name => $value) {
+                $infoHosting->addChild($name, $value);
+            }
+        }
+
+        if ($diskUsageProperties) {
+            $infoDiskUsage = $valuesTag->addChild('disk_usage');
+            foreach ($diskUsageProperties as $name => $value) {
+                $infoDiskUsage->addChild($name, $value);
+            }
+        }
+
+        if ($performanceProperties) {
+            $infoPerformance = $valuesTag->addChild('performance');
+            foreach ($performanceProperties as $name => $value) {
+                $infoPerformance->addChild($name, $value);
+            }
+        }
+
+        if ($permissionProperties) {
+            $infoPermission = $valuesTag->addChild('permissions');
+            foreach ($permissionProperties as $name => $value) {
+                $infoPermission->addChild($name, $value);
+            }
+        }
+
+        if ($phpProperties) {
+            $infoPhp = $valuesTag->addChild('php-settings');
+            foreach ($phpProperties as $name => $value) {
+                $infoPhp->addChild($name, $value);
+            }
+        }
+
+        if ($mailProperties) {
+            $infoMail = $valuesTag->addChild('mail');
+            foreach ($mailProperties as $name => $value) {
+                $infoMail->addChild($name, $value);
+            }
+        }
+
+        $response = $this->_client->request($packet);
+        return new Struct\Info($response);
+    }
+
+    /**
      * @param string $field
      * @param integer|string $value
      * @return bool
