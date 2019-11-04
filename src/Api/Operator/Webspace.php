@@ -46,12 +46,11 @@ class Webspace extends \PleskX\Api\Operator
     /**
      * @param string $field
      * @param integer|string $value
-     * @return Struct\Limits
+     * @return Struct\Limits[]
      */
     public function getLimits($field, $value)
     {
-        $items = $this->_getItems(Struct\Limits::class, 'limits', $field, $value);
-        return reset($items);
+        return $this->_getItems(Struct\Limits::class, 'limits', $field, $value);
     }
 
     /**
@@ -103,13 +102,12 @@ class Webspace extends \PleskX\Api\Operator
 
     /**
      * @param string $field
-     * @param integer|string $value
-     * @return Struct\GeneralInfo
+     * @param integer|string|array $value
+     * @return Struct\GeneralInfo[]
      */
     public function get($field, $value)
     {
-        $items = $this->_getItems(Struct\GeneralInfo::class, 'gen_info', $field, $value);
-        return reset($items);
+        return $this->_getItems(Struct\GeneralInfo::class, 'gen_info', $field, $value);
     }
 
     /**
@@ -123,11 +121,10 @@ class Webspace extends \PleskX\Api\Operator
     /**
      * @param string $field
      * @param integer|string $value
-     * @return Struct\DiskUsage
+     * @return Struct\DiskUsage[]
      */
     public function getDiskUsage($field, $value)
     {
-        $items = $this->_getItems(Struct\DiskUsage::class, 'disk_usage', $field, $value);
-        return reset($items);
+        return $this->_getItems(Struct\DiskUsage::class, 'disk_usage', $field, $value);
     }
 }

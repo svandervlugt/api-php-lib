@@ -25,7 +25,7 @@ class WebspaceTest extends TestCase
         $webspace = static::_createWebspace();
         $diskusage = static::$_client->webspace()->getDiskUsage('id', $webspace->id);
 
-        $this->assertObjectHasAttribute('httpdocs', $diskusage);
+        $this->assertObjectHasAttribute('httpdocs', $diskusage[0]);
 
         static::$_client->webspace()->delete('id', $webspace->id);
     }
@@ -54,10 +54,10 @@ class WebspaceTest extends TestCase
     public function testGetLimits()
     {
         $webspace = static::_createWebspace();
-        $limits = static::$_client->webspace()->getLimits('id', $webspace->id);
+        $limits   = static::$_client->webspace()->getLimits('id', $webspace->id);
 
-        $this->assertIsArray($limits->limits);
-        $this->assertNotEmpty($limits->limits);
+        $this->assertIsArray($limits[0]->limits);
+        $this->assertNotEmpty($limits[0]->limits);
 
         static::$_client->webspace()->delete('id', $webspace->id);
     }
@@ -165,11 +165,13 @@ class WebspaceTest extends TestCase
 
     public function testGet()
     {
-        $webspace = static::_createWebspace();
-        $webspaceInfo = static::$_client->webspace()->get('id', $webspace->id);
+        $webspace     = static::_createWebspace();
+        $webspace_2   = static::_createWebspace();
+        $webspaceInfo = static::$_client->webspace()->get('id', [$webspace->id, $webspace_2->id]);
 
-        $this->assertNotEmpty($webspaceInfo->name);
-        $this->assertEquals(0, $webspaceInfo->realSize);
+        $this->assertNotEmpty($webspaceInfo[0]->name);
+        $this->assertEquals(0, $webspaceInfo[0]->realSize);
+        $this->assertCount(2, $webspaceInfo);
 
         static::$_client->webspace()->delete('id', $webspace->id);
     }

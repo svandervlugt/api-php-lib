@@ -61,7 +61,7 @@ class Operator
      * @param string $structClass
      * @param string $infoTag
      * @param string|null $field
-     * @param integer|string|null $value
+     * @param integer|string|array|null $value
      * @param callable|null $filter
      * @return mixed
      */
@@ -72,7 +72,13 @@ class Operator
 
         $filterTag = $getTag->addChild('filter');
         if (!is_null($field)) {
-            $filterTag->addChild($field, $value);
+            if (is_array($value)) {
+                foreach ($value as $val) {
+                    $filterTag->addChild($field, $val);
+                }
+            } else {
+                $filterTag->addChild($field, $value);
+            }
         }
 
         $getTag->addChild('dataset')->addChild($infoTag);
